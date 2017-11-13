@@ -9,6 +9,7 @@
 
 BackwardPredictorsSelectionAdjR2<-function(values,dependantValue,dataset){
   adjustedRSquaredorig<-0
+  adjustedRSquared<-0
   valuesPredictorsorig<-NULL
   while(adjustedRSquared>=adjustedRSquaredorig){
     adjustedRsCollection<-RemoveOnePredictorComputeR2(dependantValue,values,dataset)
@@ -32,6 +33,7 @@ BackwardPredictorsSelectionAdjR2<-function(values,dependantValue,dataset){
 RemoveOnePredictorComputeR2<-function(dependantValue,predictors,dataset){
   adjustedRsCollection<-NULL
   for(i in predictors){
+    print(i)
     valuesI<-predictors[i != predictors]
     valuesTotal<-paste(valuesI,collapse =" + ")
     formul<- paste(dependantValue," ~ ",valuesTotal)
