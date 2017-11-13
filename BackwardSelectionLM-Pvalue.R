@@ -19,7 +19,7 @@ BackwardPredictorsSelectionpValue<-function(predictors,dependantValue,dataset){
     coefmodel <- data.frame(coef(summary(model)))
     maxCoef<-max(coefmodel$Pr...t..[-1]) # intercept not included
     nameMaxCoef<-rownames(coefmodel)[(coefmodel$Pr...t.. == maxCoef)]
-    if(maxCoef>=0.05) predictors<-predictors[predictors != nameMaxCoef]
+    if(maxCoef>=0.05) predictors<-predictors[!pmatch(predictors,nameMaxCoef,nomatch = 0)]
   }
   return(predictors)
 }
