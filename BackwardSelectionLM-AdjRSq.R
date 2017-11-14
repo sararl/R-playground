@@ -8,9 +8,14 @@
 # OUTPUT: predictors names resultant of backward selection based on R2adjusted
 
 BackwardPredictorsSelectionAdjR2<-function(values,dependantValue,dataset){
-  adjustedRSquaredorig<-0
-  adjustedRSquared<-0
-  valuesPredictorsorig<-NULL
+  
+  # AdjRsq for all predictors
+  model<-lm(as.formula(paste(dependantValue," ~ ",values)),dataset) 
+  adjustedRSquaredorig<-summary(model)$adj.r.squared
+  adjustedRSquared<-adjustedRSquaredorig
+  valuesPredictorsorig<-values
+  
+  # 
   while(adjustedRSquared>=adjustedRSquaredorig){
     adjustedRsCollection<-RemoveOnePredictorComputeR2(dependantValue,values,dataset)
     varToRemove<-names(adjustedRsCollection)[adjustedRsCollection==max(adjustedRsCollection)]
@@ -18,7 +23,7 @@ BackwardPredictorsSelectionAdjR2<-function(values,dependantValue,dataset){
     # Update values
     values<-values[varToRemove != values]
     adjustedRSquared<-max(adjustedRsCollection)
-    if(adjustedRSquared>adjustedRSquaredorig){
+    if(adjustedRSquared>=adjustedRSquaredorig){
       adjustedRSquaredorig = adjustedRSquared
       valuesPredictorsorig = values
     }
@@ -33,7 +38,7 @@ BackwardPredictorsSelectionAdjR2<-function(values,dependantValue,dataset){
 RemoveOnePredictorComputeR2<-function(dependantValue,predictors,dataset){
   adjustedRsCollection<-NULL
   for(i in predictors){
-    print(i)
+    #print(i)
     valuesI<-predictors[i != predictors]
     valuesTotal<-paste(valuesI,collapse =" + ")
     formul<- paste(dependantValue," ~ ",valuesTotal)
